@@ -12,10 +12,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  
   List<String> wallpaperImages = [
     "assets/images/img1.jpg",
+    //
     "assets/images/img2.jpg",
+    //
     "assets/images/img3.jpg",
+    //
     "assets/images/img4.jpg",
   ];
 
@@ -69,11 +73,15 @@ class _HomePageState extends State<HomePage> {
                 );
               },
               options: CarouselOptions(
-                  height: MediaQuery.of(context).size.height * 1 / 2,
+                  // height: MediaQuery.of(context).size.height * 1 / 2,
+                  height: 400,
                   // viewportFraction: 1,
-                  autoPlay: true,
+                  autoPlay: false,
                   enlargeCenterPage: true,
                   onPageChanged: (index, reason) {
+                    // if (reason == CarouselPageChangedReason.manual) {
+                    //   print("User manually swiped to page $index");
+                    // }
                     setState(() {
                       activeIndex = index;
                     });
@@ -88,10 +96,21 @@ class _HomePageState extends State<HomePage> {
               activeIndex: activeIndex,
               count: wallpaperImages.length,
               effect: WormEffect(
-                  dotHeight: 12, dotWidth: 12, activeDotColor: Colors.blue),
-            
+                  dotHeight: 10, dotWidth: 10, activeDotColor: Colors.blue),
             ),
-          )
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Container(
+            height: 50,
+            width: 200,
+            color: Colors.red,
+            // child: Cu,
+          ),
+          SizedBox(
+            height: 20,
+          ),
         ],
       ),
     );

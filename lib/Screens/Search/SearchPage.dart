@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:wallpaper/Constants/Uihelper.dart';
@@ -14,35 +13,49 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-// list
-
   List<PhotoModels> photos = [];
-  TextEditingController SearchController = TextEditingController();
+  TextEditingController searchController = TextEditingController();
+  bool isLoading = false; // Loading state
 
-  getSearchWallpaper(String searchQuery) async {
+  @override
+  void initState() {
+    super.initState();
+    fetchWallpapers("nature"); 
+    // Load default images
+  }
+
+  Future<void> fetchWallpapers(String query) async {
+    setState(() {
+      isLoading = true; // Show loading indicator
+      photos.clear(); // Clear old images before fetching new ones
+    });
+
     final response = await http.get(
-      Uri.parse(
-          "https://api.pexels.com/v1/search?query=$searchQuery&per_page=1"),
+      Uri.parse("https://api.pexels.com/v1/search?query=$query&per_page=20"),
       headers: {
         "Authorization":
-            "IZvyKuVQjTeXRWgg75tpAtN3cQf4PntYOGDk50ycfJZw5RS6Dj84QvKm"
+            "IZvyKuVQjTeXRWgg75tpAtN3cQf4PntYOGDk50ycfJZw5RS6Dj84QvKm",
       },
     );
 
     if (response.statusCode == 200) {
       Map<String, dynamic> jsonData = jsonDecode(response.body);
-      jsonData["photos"].forEach((element) {
-        // Use the factory constructor directly
-        PhotoModels photoModels = PhotoModels.fromMap(element);
-        photos.add(photoModels);
+      List<PhotoModels> newPhotos = jsonData["photos"]
+          .map<PhotoModels>((element) => PhotoModels.fromMap(element))
+          .toList();
+
+      setState(() {
+        photos = newPhotos;
+        isLoading = false;
       });
-      setState(() {}); // Refresh UI after adding photos
     } else {
-      print("Error: ${response.statusCode}");
+      setState(() {
+        isLoading = false;
+      });
+      print("Error fetching wallpapers: ${response.statusCode}");
     }
   }
 
-  @override
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -57,67 +70,65 @@ class _SearchPageState extends State<SearchPage> {
                 fontsize: 28,
               ),
             ),
-            SizedBox(
-              height: 20,
-            ),
+            SizedBox(height: 20),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 10),
               margin: EdgeInsets.symmetric(horizontal: 20),
-              width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 239, 236, 236),
+                color: Color(0xFFEFECEC),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: TextField(
-                controller: SearchController,
+                controller: searchController,
                 decoration: InputDecoration(
                   border: InputBorder.none,
+                  hintText: "Search wallpapers...",
                   suffixIcon: GestureDetector(
                     onTap: () {
-                      setState(() {}); //Trigger FutureBuilder to rebuild
+                      if (searchController.text.isNotEmpty) {
+                        fetchWallpapers(searchController.text);
+                      }
                     },
                     child: Icon(Icons.search),
                   ),
                 ),
+                onSubmitted: (query) {
+                  if (query.isNotEmpty) {
+                    fetchWallpapers(query);
+                  }
+                },
               ),
             ),
             SizedBox(height: 20),
             Expanded(
-              child: FutureBuilder(
-                future: getSearchWallpaper(SearchController.text),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else if (snapshot.hasError) {
-                    return Center(
-                      child: Text("Error: ${snapshot.error}"),
-                    );
-                  } else if (!snapshot.hasData || photos.isEmpty) {
-                    return Center(
-                      child: Text("No wallpapers found"),
-                    );
-                  } else {
-                    // Display the list of photos
-                    return GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                      ),
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      itemCount: photos.length,
-                      itemBuilder: (context, index) {
-                        return ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          // child: CachedNetworkImage(imageUrl:)
-                        );
-                      },
-                    );
-                  }
-                },
-              ),
+              child: isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : photos.isEmpty
+                      ? Center(child: Text("No wallpapers found"))
+                      : GridView.builder(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10,
+                          ),
+                          itemCount: photos.length,
+                          itemBuilder: (context, index) {
+                            return ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: CachedNetworkImage(
+                                imageUrl: photos[index].src!.medium!,
+                                fit: BoxFit.cover,
+                                placeholder: (context, url) => Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                                errorWidget: (context, url, error) =>
+                                    Icon(Icons.error),
+                              ),
+                            );
+                          },
+                        ),
             ),
           ],
         ),

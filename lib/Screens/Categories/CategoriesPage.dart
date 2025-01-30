@@ -11,6 +11,7 @@ class CategoriesPage extends StatefulWidget {
 class _CategoriesPageState extends State<CategoriesPage> {
   //list
   List<Map<String, String>> arrData = [
+    // list
     {'text': 'WildLife', 'img': 'assets/images/wild.jpg'},
     {'text': 'Foods', 'img': 'assets/images/food.jpg'},
     {'text': 'Nature', 'img': 'assets/images/nature.jpg'},

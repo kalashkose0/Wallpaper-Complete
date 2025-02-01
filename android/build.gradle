@@ -12,7 +12,12 @@ subprojects {
 subprojects {
     project.evaluationDependsOn(":app")
 }
+dependencies {
+    classpath 'com.android.tools.build:gradle:8.2.1'  // Upgrade this
+}
+
 
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
+

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wallpaper/Admin/AdminLogIn.dart';
 import 'package:wallpaper/BottomNavigationBar/BottomNavigationBar.dart';
 import 'package:wallpaper/Screens/homePage.dart';
 
@@ -19,7 +20,8 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // home: HomePage(),
-      home: BottomNavigationScreen(),
+      // home: BottomNavigationScreen(),
+      home: AdminLogin(),
     );
   }
 }

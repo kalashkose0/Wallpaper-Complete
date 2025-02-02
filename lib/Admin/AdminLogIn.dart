@@ -74,6 +74,7 @@ class _AdminLoginState extends State<AdminLogin> {
                                       return "Please Enter Username";
                                     }
                                   },
+                                  controller: usercontroller,
                                   decoration: InputDecoration(
                                       hintText: "Username",
                                       hintStyle: TextStyle(
@@ -89,12 +90,14 @@ class _AdminLoginState extends State<AdminLogin> {
                                 SizedBox(
                                   height: 50,
                                 ),
+                                // Text-Form-Field because in this we can use validator which check the null or empty
                                 TextFormField(
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
                                       return "Please Enter Password";
                                     }
                                   },
+                                  controller: Passwordcontroller,
                                   decoration: InputDecoration(
                                       hintText: "Password",
                                       hintStyle: TextStyle(
@@ -110,19 +113,26 @@ class _AdminLoginState extends State<AdminLogin> {
                                 SizedBox(
                                   height: 40,
                                 ),
-                                Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  decoration: BoxDecoration(
-                                    color: Colors.black,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      "LogIn",
-                                      style: TextStyle(
-                                          color: Colors.black,
+                                GestureDetector(
+                                  onTap: (){
+                                    
+                                  },
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: 60,
+                                    decoration: BoxDecoration(
+                                      color: Colors.black,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        "LogIn",
+                                        style: TextStyle(
+                                          color: Colors.white,
                                           fontSize: 22,
-                                          fontWeight: FontWeight.bold),
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),

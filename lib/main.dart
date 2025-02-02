@@ -20,8 +20,8 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // home: HomePage(),
-      // home: BottomNavigationScreen(),
-      home: AdminLogin(),
+      home: BottomNavigationScreen(),
+      // home: AdminLogin(),
     );
   }
 }

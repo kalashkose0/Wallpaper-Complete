@@ -12,7 +12,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  
   List<String> wallpaperImages = [
     "assets/images/img1.jpg",
     //
@@ -45,7 +44,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 SizedBox(width: 70),
                 Uihelper.CustomText(
-                  text: "Wallify",
+                  text: "Wallpaperia",
                   color: Colors.black,
                   fontweight: FontWeight.bold,
                   fontsize: 28,

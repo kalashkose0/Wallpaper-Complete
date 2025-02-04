@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1011839534597",
+    "project_id": "wallpaperia-58dbc",
+    "storage_bucket": "wallpaperia-58dbc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1011839534597:android:ea0453be6b14b9026f3e6c",
+        "android_client_info": {
+          "package_name": "com.example.wallpaper"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBc1LRJAR5IGoupOTRU6XKR9SPBdnfOeN8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class AdminLogin extends StatefulWidget {
@@ -114,9 +115,7 @@ class _AdminLoginState extends State<AdminLogin> {
                                   height: 40,
                                 ),
                                 GestureDetector(
-                                  onTap: (){
-                                    
-                                  },
+                                  onTap: () {},
                                   child: Container(
                                     width: MediaQuery.of(context).size.width,
                                     height: 60,
@@ -150,5 +149,30 @@ class _AdminLoginState extends State<AdminLogin> {
         ),
       ),
     );
+  }
+
+  LoginAdmin() {
+    FirebaseFirestore.instance.collection("Admin").get().then((snapshot) {
+      snapshot.docs.forEach((result) {
+        if (result.data()['id'] != usercontroller.text.trim()) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Colors.amber,
+            content: Text(
+              "Your id is not Valid",
+              style: TextStyle(fontSize: 18),
+            ),
+          ));
+        }
+        if (result.data()['password'] != Passwordcontroller.text.trim()) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Colors.amber,
+            content: Text(
+              "Your password is not Valid",
+              style: TextStyle(fontSize: 18),
+            ),
+          ));
+        }
+      });
+    });
   }
 }

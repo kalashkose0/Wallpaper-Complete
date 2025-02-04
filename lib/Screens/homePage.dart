@@ -102,11 +102,22 @@ class _HomePageState extends State<HomePage> {
             height: 20,
           ),
           Container(
-            height: 50,
-            width: 200,
-            color: Colors.red,
-            // child: Cu,
-          ),
+              height: 50,
+              width: 200,
+              // color: Colors.red,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.red,
+              ),
+              child: Center(
+                child: Text(
+                  "Scroll ...",
+                  style: TextStyle(
+                      fontSize: 22,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                ),
+              )),
           SizedBox(
             height: 20,
           ),

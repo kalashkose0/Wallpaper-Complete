@@ -1,4 +1,8 @@
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:random_string/random_string.dart';
 
 class AddWallpaper extends StatefulWidget {
   const AddWallpaper({super.key});
@@ -9,7 +13,35 @@ class AddWallpaper extends StatefulWidget {
 
 class _AddWallpaperState extends State<AddWallpaper> {
   final List<String> categoryItems = ['WildLife', 'Food', 'Nature', 'City'];
-  String? selectedCategory; // Store selected category
+  String? selectedCategory;
+
+  final ImagePicker _picker = ImagePicker();
+  File? selectedImage;
+
+  Future<void> getImage() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      setState(() {
+        selectedImage = File(image.path);
+      });
+    }
+  }
+
+  // firebase storage use nhi kiya hai abhi
+  // that's why ?
+
+  // -----------------------------------
+
+  // uploadItem() async {
+  //   if (selectedImage != null) {
+  //     String addId = randomAlphaNumeric(10);
+  //     Reference firebaseStorageRef =
+  //         FirebaseStorage.instance.ref().child("blogImages").child(addId);
+
+  //     final UploadTask task =
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -34,24 +66,49 @@ class _AddWallpaperState extends State<AddWallpaper> {
       body: Column(
         children: [
           SizedBox(height: 20),
-          Center(
-            child: Material(
-              elevation: 8.0,
-              borderRadius: BorderRadius.circular(20),
-              child: Container(
-                width: 250,
-                height: 300,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black, width: 2),
-                  borderRadius: BorderRadius.circular(20),
+          selectedImage == null
+              ? GestureDetector(
+                  onTap: getImage,
+                  child: Center(
+                    child: Material(
+                      elevation: 8.0,
+                      borderRadius: BorderRadius.circular(20),
+                      child: Container(
+                        width: 250,
+                        height: 300,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black, width: 2),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Icon(
+                          Icons.camera_alt_outlined,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              : Center(
+                  child: Material(
+                    elevation: 8.0,
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      width: 250,
+                      height: 300,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black, width: 2),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(18),
+                        child: Image.file(
+                          selectedImage!,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
-                child: Icon(
-                  Icons.camera_alt_outlined,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-          ),
           SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -85,6 +142,33 @@ class _AddWallpaperState extends State<AddWallpaper> {
                       selectedCategory = newValue;
                     });
                   },
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: 40),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: GestureDetector(
+              onTap: () {
+                // Add functionality here
+              },
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: 60,
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Center(
+                  child: Text(
+                    "Add",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
             ),

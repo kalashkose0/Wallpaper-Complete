@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:wallpaper/Admin/AddWallpaper.dart';
 
 class AdminLogin extends StatefulWidget {
   const AdminLogin({super.key});
@@ -115,7 +116,9 @@ class _AdminLoginState extends State<AdminLogin> {
                                   height: 40,
                                 ),
                                 GestureDetector(
-                                  onTap: () {},
+                                  onTap: () {
+                                    LoginAdmin();
+                                  },
                                   child: Container(
                                     width: MediaQuery.of(context).size.width,
                                     height: 60,
@@ -171,6 +174,10 @@ class _AdminLoginState extends State<AdminLogin> {
               style: TextStyle(fontSize: 18),
             ),
           ));
+        } else {
+          Route route = MaterialPageRoute(builder: (context) => AddWallpaper());
+
+          Navigator.push(context, route);
         }
       });
     });
